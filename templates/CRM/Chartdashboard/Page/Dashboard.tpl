@@ -8,6 +8,11 @@
         <button id="configure-dashboard" class="btn btn-primary">
           <i class="crm-i fa-cog"></i> {ts}Configure Dashboard{/ts}
         </button>
+        {if !empty($settings.enable_export)}
+          <button id="export-dashboard" class="btn btn-success">
+            <i class="crm-i fa-download"></i> {ts}Export Data{/ts}
+          </button>
+        {/if}
         <button id="refresh-all" class="btn btn-secondary">
           <i class="crm-i fa-refresh"></i> {ts}Refresh All{/ts}
         </button>
@@ -52,6 +57,85 @@
       </div>
     </div>
   </div>
+
+  <!-- Export Modal -->
+  {if !empty($settings.enable_export)}
+    <div id="export-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>{ts}Export Chart Data{/ts}</h2>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="export-options">
+            <div class="export-section">
+              <h3>{ts}Select Chart to Export{/ts}</h3>
+              <select id="export-chart-select" class="form-control">
+                <option value="">{ts}-- Select Chart --{/ts}</option>
+              </select>
+            </div>
+
+            <div class="export-section">
+              <h3>{ts}Export Format{/ts}</h3>
+              <div class="format-options">
+                <label class="format-option">
+                  <input type="radio" name="export_format" value="csv" checked>
+                  <i class="crm-i fa-file-csv"></i>
+                  <span>{ts}CSV{/ts}</span>
+                  <small>{ts}Comma-separated values, Excel compatible{/ts}</small>
+                </label>
+                <label class="format-option">
+                  <input type="radio" name="export_format" value="excel">
+                  <i class="crm-i fa-file-excel"></i>
+                  <span>{ts}Excel{/ts}</span>
+                  <small>{ts}Microsoft Excel format (.xlsx){/ts}</small>
+                </label>
+                <label class="format-option">
+                  <input type="radio" name="export_format" value="pdf">
+                  <i class="crm-i fa-file-pdf"></i>
+                  <span>{ts}PDF{/ts}</span>
+                  <small>{ts}Formatted report for printing{/ts}</small>
+                </label>
+                <label class="format-option">
+                  <input type="radio" name="export_format" value="json">
+                  <i class="crm-i fa-file-code"></i>
+                  <span>{ts}JSON{/ts}</span>
+                  <small>{ts}Raw data for developers{/ts}</small>
+                </label>
+              </div>
+            </div>
+
+            <div class="export-section">
+              <h3>{ts}Time Range{/ts}</h3>
+              <select id="export-time-range" class="form-control">
+                {foreach from=$timeRangeOptions key=value item=label}
+                  <option value="{$value}">{$label}</option>
+                {/foreach}
+              </select>
+            </div>
+
+            <div class="export-section">
+              <h3>{ts}Additional Options{/ts}</h3>
+              <label class="checkbox-option">
+                <input type="checkbox" id="include-summary" checked>
+                {ts}Include summary statistics{/ts}
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" id="include-metadata" checked>
+                {ts}Include metadata (export date, time range, etc.){/ts}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{ts}Cancel{/ts}</button>
+          <button type="button" id="start-export" class="btn btn-success">
+            <i class="crm-i fa-download"></i> {ts}Export Data{/ts}
+          </button>
+        </div>
+      </div>
+    </div>
+  {/if}
 
   <!-- Chart Configuration Modal -->
   <div id="config-modal" class="modal" style="display: none;">
@@ -147,6 +231,11 @@
         <button class="chart-config btn btn-sm">
           <i class="crm-i fa-cog"></i>
         </button>
+        {if !empty($settings.enable_export)}
+          <button class="chart-export btn btn-sm btn-success" title="{ts}Export Chart Data{/ts}">
+            <i class="crm-i fa-download"></i>
+          </button>
+        {/if}
         <button class="chart-remove btn btn-sm btn-danger">
           <i class="crm-i fa-times"></i>
         </button>

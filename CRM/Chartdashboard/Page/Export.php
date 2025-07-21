@@ -1,6 +1,8 @@
 <?php
 
 use CRM_Chartdashboard_ExtensionUtil as E;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 /**
  * Export page for Chart Dashboard data
@@ -13,10 +15,20 @@ class CRM_Chartdashboard_Page_Export extends CRM_Core_Page {
       CRM_Core_Error::statusBounce('You do not have permission to export chart data.');
     }
 
+    // Check if export is enabled
+    $settings = CRM_Chartdashboard_Utils_Helper::getSettings();
+    if (empty($settings['enable_export'])) {
+      CRM_Core_Session::setStatus(E::ts('Data export is not enabled. Please contact your administrator.'), E::ts('Export Disabled'), 'error');
+      CRM_Utils_System::redirect(CRM_Utils_System::url('civicrm/chart-dashboard'));
+      return;
+    }
+
     // Get export parameters
     $chartType = CRM_Utils_Request::retrieve('chart_type', 'String', $this, TRUE);
     $timeRange = CRM_Utils_Request::retrieve('time_range', 'String', $this, FALSE, '7days');
     $format = CRM_Utils_Request::retrieve('format', 'String', $this, FALSE, 'csv');
+    $includeSummary = CRM_Utils_Request::retrieve('include_summary', 'Boolean', $this, FALSE, TRUE);
+    $includeMetadata = CRM_Utils_Request::retrieve('include_metadata', 'Boolean', $this, FALSE, TRUE);
 
     try {
       // Get chart data
@@ -146,7 +158,7 @@ class CRM_Chartdashboard_Page_Export extends CRM_Core_Page {
    * Export data as PDF
    */
   private function exportPDF($chartType, $data, $timeRange) {
-    require_once 'packages/dompdf/dompdf_config.inc.php';
+    //require_once 'packages/dompdf/dompdf_config.inc.php';
 
     $filename = $this->generateFilename($chartType, $timeRange, 'pdf');
     $csvData = $this->prepareDataForExport($chartType, $data);

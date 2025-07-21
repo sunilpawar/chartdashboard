@@ -22,6 +22,7 @@
       charts: new Map(),
       refreshTimers: new Map(),
       isConfigMode: false,
+      isExportMode: false,
       globalTimeRange: null
     },
 
@@ -79,6 +80,28 @@
         self.refreshAllCharts();
       });
 
+      // Export dashboard button
+      $('#export-dashboard').on('click', function() {
+        self.openExportModal();
+      });
+
+      // Export modal events (only if export modal exists)
+      if ($('#export-modal').length > 0) {
+        $('#export-modal .close, #export-modal [data-dismiss="modal"]').on('click', function() {
+          self.closeExportModal();
+        });
+
+        $('#start-export').on('click', function() {
+          self.startExport();
+        });
+
+        $('#export-modal').on('click', function(e) {
+          if (e.target === this) {
+            self.closeExportModal();
+          }
+        });
+      }
+
       // Global time range selector
       $('#global-time-range').on('change', function() {
         var timeRange = $(this).val();
@@ -111,6 +134,11 @@
         self.removeChart(chartId);
       });
 
+      $(document).on('click', '.chart-export', function() {
+        var chartId = $(this).closest('.chart-container').data('chart-id');
+        self.openExportModal(chartId);
+      });
+
       $(document).on('click', '.add-chart', function() {
         var chartItem = $(this).closest('.chart-item');
         var chartConfig = self.getChartConfigFromItem(chartItem);
@@ -136,12 +164,21 @@
 
       // Keyboard shortcuts
       $(document).on('keydown', function(e) {
-        if (e.key === 'Escape' && self.state.isConfigMode) {
-          self.closeConfigModal();
+        if (e.key === 'Escape') {
+          if (self.state.isConfigMode) {
+            self.closeConfigModal();
+          }
+          if (self.state.isExportMode && $('#export-modal').length > 0) {
+            self.closeExportModal();
+          }
         }
         if (e.ctrlKey && e.key === 'r') {
           e.preventDefault();
           self.refreshAllCharts();
+        }
+        if (e.ctrlKey && e.key === 'e' && $('#export-dashboard').length > 0) {
+          e.preventDefault();
+          self.openExportModal();
         }
       });
     },
@@ -152,7 +189,13 @@
       this.showLoading(true);
 
       var dashboardConfig = CRM.vars.chartDashboard.dashboardConfig;
+      var settings = CRM.vars.chartDashboard.settings || {};
       var self = this;
+
+      // Hide export button if disabled
+      if (!settings.enable_export) {
+        $('#export-dashboard').hide();
+      }
 
       // Clear existing charts
       this.clearAllCharts();
@@ -258,6 +301,12 @@
       // Hide time range selector if not supported
       if (chartInfo && !chartInfo.supports_time_range) {
         template.find('.chart-time-range').hide();
+      }
+
+      // Hide export button if export is disabled
+      var settings = CRM.vars.chartDashboard.settings || {};
+      if (!settings.enable_export) {
+        template.find('.chart-export').hide();
       }
 
       return template;
@@ -1044,6 +1093,124 @@
           CRM.status('error', 'Failed to save configuration');
         }
       });
+    },
+
+    // Export modal functions
+    openExportModal: function(preselectedChartId) {
+      var settings = CRM.vars.chartDashboard.settings || {};
+      if (!settings.enable_export) {
+        CRM.alert('Data export is not enabled. Please contact your administrator.', 'Export Disabled', 'error');
+        return;
+      }
+
+      console.log('Opening export modal');
+      this.state.isExportMode = true;
+      this.populateExportModal(preselectedChartId);
+      $('#export-modal').show().addClass('fade-in');
+    },
+
+    closeExportModal: function() {
+      console.log('Closing export modal');
+      this.state.isExportMode = false;
+      $('#export-modal').hide().removeClass('fade-in');
+    },
+
+    populateExportModal: function(preselectedChartId) {
+      var self = this;
+      var chartSelect = $('#export-chart-select');
+      chartSelect.empty();
+
+      // Add default option
+      chartSelect.append('<option value="">' + 'All Charts' + '</option>');
+
+      // Add available charts
+      $('.chart-container').each(function() {
+        var chartId = $(this).data('chart-id');
+        var chartTitle = $(this).find('.chart-title').text();
+        var option = $('<option>').val(chartId).text(chartTitle);
+        chartSelect.append(option);
+      });
+
+      // Preselect chart if specified
+      if (preselectedChartId) {
+        chartSelect.val(preselectedChartId);
+      }
+
+      // Set default time range to match global or first chart
+      var defaultTimeRange = this.state.globalTimeRange || '7days';
+      $('#export-time-range').val(defaultTimeRange);
+    },
+
+    startExport: function() {
+      var chartId = $('#export-chart-select').val();
+      var format = $('input[name="export_format"]:checked').val();
+      var timeRange = $('#export-time-range').val();
+      var includeSummary = $('#include-summary').is(':checked');
+      var includeMetadata = $('#include-metadata').is(':checked');
+
+      if (!chartId) {
+        CRM.alert('Please select a chart to export', 'Export Error', 'error');
+        return;
+      }
+
+      console.log('Starting export:', {
+        chartId: chartId,
+        format: format,
+        timeRange: timeRange,
+        includeSummary: includeSummary,
+        includeMetadata: includeMetadata
+      });
+
+      // Show loading state
+      $('#start-export').prop('disabled', true).html('<i class="crm-i fa-spinner fa-spin"></i> Exporting...');
+
+      // Build export URL
+      var exportUrl = CRM.vars.chartDashboard.apiURL.replace('entity=ChartData&action=Get', 'entity=ChartData&action=Export');
+      exportUrl += '&chart_type=' + encodeURIComponent(chartId);
+      exportUrl += '&format=' + encodeURIComponent(format);
+      exportUrl += '&time_range=' + encodeURIComponent(timeRange);
+      exportUrl += '&include_summary=' + (includeSummary ? '1' : '0');
+      exportUrl += '&include_metadata=' + (includeMetadata ? '1' : '0');
+
+      // Use a different approach - create a form and submit it
+      this.downloadExport(chartId, format, timeRange, includeSummary, includeMetadata);
+    },
+
+    downloadExport: function(chartId, format, timeRange, includeSummary, includeMetadata) {
+      var self = this;
+
+      // Create hidden form for file download
+      var form = $('<form>', {
+        method: 'POST',
+        action: CRM.vars.chartDashboard.exportURL || 'civicrm/ajax/chart-dashboard/export',
+        target: '_blank'
+      });
+
+      // Add form fields
+      form.append($('<input>', { type: 'hidden', name: 'chart_type', value: chartId }));
+      form.append($('<input>', { type: 'hidden', name: 'format', value: format }));
+      form.append($('<input>', { type: 'hidden', name: 'time_range', value: timeRange }));
+      form.append($('<input>', { type: 'hidden', name: 'include_summary', value: includeSummary ? '1' : '0' }));
+      form.append($('<input>', { type: 'hidden', name: 'include_metadata', value: includeMetadata ? '1' : '0' }));
+
+      // Add CSRF token if available
+      if (CRM.vars.api_key) {
+        form.append($('<input>', { type: 'hidden', name: 'api_key', value: CRM.vars.api_key }));
+      }
+      if (CRM.vars.site_key) {
+        form.append($('<input>', { type: 'hidden', name: 'key', value: CRM.vars.site_key }));
+      }
+
+      // Submit form
+      form.appendTo('body').submit();
+
+      // Clean up
+      setTimeout(function() {
+        form.remove();
+        $('#start-export').prop('disabled', false).html('<i class="crm-i fa-download"></i> Export Data');
+        self.closeExportModal();
+        CRM.status('success', 'Export started. Your download should begin shortly.');
+      }, 1000);
     },
 
     // Helper functions

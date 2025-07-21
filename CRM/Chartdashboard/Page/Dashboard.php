@@ -29,7 +29,10 @@ class CRM_Chartdashboard_Page_Dashboard extends CRM_Core_Page {
     // Get user's dashboard configuration
     $userID = CRM_Core_Session::getLoggedInContactID();
     $dashboardConfig = $this->getUserDashboardConfig($userID);
+    $settings = CRM_Chartdashboard_Utils_Helper::getSettings();
+
     $this->assign('dashboardConfig', $dashboardConfig);
+    $this->assign('settings', $settings);
 
     // Time range options
     $timeRangeOptions = [
@@ -62,8 +65,10 @@ class CRM_Chartdashboard_Page_Dashboard extends CRM_Core_Page {
     $jsVars = [
       'apiURL' => CRM_Utils_System::url('civicrm/ajax/rest', 'entity=ChartData&action=Get&json=1'),
       'availableChartsURL' => CRM_Utils_System::url('civicrm/ajax/rest', 'entity=ChartData&action=GetAvailableCharts&json=1'),
+      'exportURL' => CRM_Utils_System::url('civicrm/ajax/chart-dashboard/export'),
       'saveConfigURL' => CRM_Utils_System::url('civicrm/ajax/chart-dashboard/save-config'),
       'userID' => $userID,
+      'settings' => CRM_Chartdashboard_Utils_Helper::getSettings(),
     ];
     CRM_Core_Resources::singleton()->addVars('chartDashboard', $jsVars);
 

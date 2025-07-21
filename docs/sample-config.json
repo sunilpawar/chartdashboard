@@ -1,0 +1,485 @@
+{
+  "_comment": "Sample configuration file for CiviCRM Chart Dashboard Extension",
+  "_description": "This file shows example configurations for different organizational needs",
+  "default_admin_config": {
+    "description": "Default configuration for administrators - comprehensive view",
+    "layout": "grid",
+    "charts": [
+      {
+        "chart_id": "realtime_donations",
+        "chart_type": "line",
+        "time_range": "7days",
+        "position": 1,
+        "size": "large",
+        "title": "Real-Time Donations",
+        "enabled": true
+      },
+      {
+        "chart_id": "recurring_vs_onetime",
+        "chart_type": "stacked_bar",
+        "time_range": "1month",
+        "position": 2,
+        "size": "medium",
+        "title": "Recurring vs One-Time",
+        "enabled": true
+      },
+      {
+        "chart_id": "campaign_progress",
+        "chart_type": "progress",
+        "time_range": "",
+        "position": 3,
+        "size": "medium",
+        "title": "Campaign Progress",
+        "enabled": true
+      },
+      {
+        "chart_id": "donor_retention",
+        "chart_type": "funnel",
+        "time_range": "",
+        "position": 4,
+        "size": "large",
+        "title": "Donor Retention",
+        "enabled": true
+      },
+      {
+        "chart_id": "avg_gift_trend",
+        "chart_type": "line",
+        "time_range": "6months",
+        "position": 5,
+        "size": "medium",
+        "title": "Average Gift Trends",
+        "enabled": true
+      },
+      {
+        "chart_id": "membership_revenue",
+        "chart_type": "pie",
+        "time_range": "1year",
+        "position": 6,
+        "size": "medium",
+        "title": "Membership Revenue",
+        "enabled": true
+      }
+    ]
+  },
+  "executive_dashboard_config": {
+    "description": "High-level view for executives and board members",
+    "layout": "grid",
+    "charts": [
+      {
+        "chart_id": "realtime_donations",
+        "chart_type": "area",
+        "time_range": "1month",
+        "position": 1,
+        "size": "large",
+        "title": "Monthly Donation Trends",
+        "enabled": true
+      },
+      {
+        "chart_id": "campaign_progress",
+        "chart_type": "progress",
+        "time_range": "",
+        "position": 2,
+        "size": "large",
+        "title": "Active Campaign Progress",
+        "enabled": true
+      },
+      {
+        "chart_id": "donor_retention",
+        "chart_type": "bar",
+        "time_range": "",
+        "position": 3,
+        "size": "medium",
+        "title": "Donor Retention Rate",
+        "enabled": true
+      },
+      {
+        "chart_id": "membership_revenue",
+        "chart_type": "doughnut",
+        "time_range": "1year",
+        "position": 4,
+        "size": "medium",
+        "title": "Revenue by Membership Type",
+        "enabled": true
+      }
+    ]
+  },
+  "fundraising_team_config": {
+    "description": "Focused view for fundraising teams",
+    "layout": "grid",
+    "charts": [
+      {
+        "chart_id": "realtime_donations",
+        "chart_type": "line",
+        "time_range": "24hr",
+        "position": 1,
+        "size": "medium",
+        "title": "Today's Donations",
+        "enabled": true
+      },
+      {
+        "chart_id": "campaign_progress",
+        "chart_type": "progress",
+        "time_range": "",
+        "position": 2,
+        "size": "large",
+        "title": "Campaign Goals",
+        "enabled": true
+      },
+      {
+        "chart_id": "pledged_vs_actual",
+        "chart_type": "grouped_bar",
+        "time_range": "3months",
+        "position": 3,
+        "size": "medium",
+        "title": "Pledge Fulfillment",
+        "enabled": true
+      },
+      {
+        "chart_id": "lapsed_donors",
+        "chart_type": "bar",
+        "time_range": "1year",
+        "position": 4,
+        "size": "medium",
+        "title": "Lapsed Donors",
+        "enabled": true
+      },
+      {
+        "chart_id": "avg_gift_trend",
+        "chart_type": "line",
+        "time_range": "1year",
+        "position": 5,
+        "size": "large",
+        "title": "Gift Size Trends",
+        "enabled": true
+      }
+    ]
+  },
+  "membership_team_config": {
+    "description": "Specialized view for membership coordinators",
+    "layout": "grid",
+    "charts": [
+      {
+        "chart_id": "membership_revenue",
+        "chart_type": "pie",
+        "time_range": "1year",
+        "position": 1,
+        "size": "large",
+        "title": "Membership Revenue Distribution",
+        "enabled": true
+      },
+      {
+        "chart_id": "recurring_vs_onetime",
+        "chart_type": "stacked_bar",
+        "time_range": "6months",
+        "position": 2,
+        "size": "medium",
+        "title": "Membership vs Donations",
+        "enabled": true
+      },
+      {
+        "chart_id": "donor_retention",
+        "chart_type": "funnel",
+        "time_range": "",
+        "position": 3,
+        "size": "medium",
+        "title": "Member Retention",
+        "enabled": true
+      },
+      {
+        "chart_id": "avg_gift_trend",
+        "chart_type": "line",
+        "time_range": "1year",
+        "position": 4,
+        "size": "large",
+        "title": "Average Membership Fees",
+        "enabled": true
+      }
+    ]
+  },
+  "global_settings_examples": {
+    "description": "Example global settings for different organizational sizes",
+    "small_organization": {
+      "enable_auto_refresh": true,
+      "refresh_interval": 600,
+      "enable_export": true,
+      "default_time_range": "1month",
+      "api_timeout": 30,
+      "max_data_points": 50,
+      "enable_caching": true,
+      "cache_duration": 30,
+      "enable_alerts": true,
+      "alert_email": "admin@smallorg.org",
+      "low_donation_threshold": 100,
+      "goal_achievement_threshold": 90,
+      "color_scheme": "blue"
+    },
+    "medium_organization": {
+      "enable_auto_refresh": true,
+      "refresh_interval": 300,
+      "enable_export": true,
+      "default_time_range": "7days",
+      "api_timeout": 30,
+      "max_data_points": 100,
+      "enable_caching": true,
+      "cache_duration": 15,
+      "enable_alerts": true,
+      "alert_email": "fundraising@mediumorg.org",
+      "low_donation_threshold": 500,
+      "goal_achievement_threshold": 80,
+      "color_scheme": "default"
+    },
+    "large_organization": {
+      "enable_auto_refresh": true,
+      "refresh_interval": 180,
+      "enable_export": true,
+      "default_time_range": "7days",
+      "api_timeout": 45,
+      "max_data_points": 200,
+      "enable_caching": true,
+      "cache_duration": 10,
+      "enable_alerts": true,
+      "alert_email": "analytics@largeorg.org",
+      "low_donation_threshold": 2000,
+      "goal_achievement_threshold": 85,
+      "color_scheme": "custom",
+      "primary_color": "#1a237e",
+      "secondary_color": "#3949ab",
+      "accent_color": "#ff5722"
+    }
+  },
+  "chart_type_recommendations": {
+    "description": "Recommended chart types for different data visualization needs",
+    "realtime_donations": {
+      "recommended": [
+        "line",
+        "area"
+      ],
+      "description": "Time series data works best with line or area charts",
+      "best_time_ranges": [
+        "24hr",
+        "7days",
+        "1month"
+      ]
+    },
+    "recurring_vs_onetime": {
+      "recommended": [
+        "stacked_bar",
+        "grouped_bar"
+      ],
+      "description": "Comparative data visualization",
+      "best_time_ranges": [
+        "1month",
+        "3months",
+        "6months"
+      ]
+    },
+    "campaign_progress": {
+      "recommended": [
+        "progress",
+        "horizontal_bar"
+      ],
+      "description": "Goal tracking and progress visualization",
+      "best_time_ranges": [
+        "current"
+      ]
+    },
+    "donor_retention": {
+      "recommended": [
+        "funnel",
+        "bar"
+      ],
+      "description": "Funnel analysis for retention metrics",
+      "best_time_ranges": [
+        "multi-year"
+      ]
+    },
+    "membership_revenue": {
+      "recommended": [
+        "pie",
+        "doughnut",
+        "bar"
+      ],
+      "description": "Category distribution visualization",
+      "best_time_ranges": [
+        "6months",
+        "1year"
+      ]
+    }
+  },
+  "alert_configuration_examples": {
+    "description": "Example configurations for email alerts",
+    "daily_monitoring": {
+      "enable_alerts": true,
+      "alert_email": "daily-monitor@organization.org",
+      "low_donation_threshold": 200,
+      "goal_achievement_threshold": 75,
+      "check_frequency": "daily",
+      "alert_types": [
+        "low_donations",
+        "goal_achieved"
+      ]
+    },
+    "weekly_reporting": {
+      "enable_alerts": true,
+      "alert_email": "weekly-reports@organization.org",
+      "low_donation_threshold": 1000,
+      "goal_achievement_threshold": 90,
+      "check_frequency": "weekly",
+      "alert_types": [
+        "donor_retention",
+        "goal_achieved"
+      ]
+    },
+    "executive_alerts": {
+      "enable_alerts": true,
+      "alert_email": "executive@organization.org",
+      "low_donation_threshold": 5000,
+      "goal_achievement_threshold": 95,
+      "check_frequency": "monthly",
+      "alert_types": [
+        "goal_achieved",
+        "system_error"
+      ]
+    }
+  },
+  "performance_optimization_settings": {
+    "description": "Performance settings for different server capabilities",
+    "shared_hosting": {
+      "enable_caching": true,
+      "cache_duration": 60,
+      "api_timeout": 15,
+      "max_data_points": 50,
+      "refresh_interval": 900,
+      "notes": "Conservative settings for shared hosting environments"
+    },
+    "vps_hosting": {
+      "enable_caching": true,
+      "cache_duration": 30,
+      "api_timeout": 30,
+      "max_data_points": 100,
+      "refresh_interval": 300,
+      "notes": "Balanced settings for VPS hosting"
+    },
+    "dedicated_server": {
+      "enable_caching": true,
+      "cache_duration": 15,
+      "api_timeout": 45,
+      "max_data_points": 200,
+      "refresh_interval": 180,
+      "notes": "High-performance settings for dedicated servers"
+    }
+  },
+  "color_scheme_examples": {
+    "description": "Custom color scheme examples for different branding needs",
+    "corporate_blue": {
+      "color_scheme": "custom",
+      "primary_color": "#1565c0",
+      "secondary_color": "#42a5f5",
+      "accent_color": "#ff5722",
+      "name": "Corporate Blue Theme"
+    },
+    "nonprofit_green": {
+      "color_scheme": "custom",
+      "primary_color": "#2e7d32",
+      "secondary_color": "#66bb6a",
+      "accent_color": "#ff9800",
+      "name": "Nonprofit Green Theme"
+    },
+    "healthcare_teal": {
+      "color_scheme": "custom",
+      "primary_color": "#00695c",
+      "secondary_color": "#4db6ac",
+      "accent_color": "#e91e63",
+      "name": "Healthcare Teal Theme"
+    },
+    "education_purple": {
+      "color_scheme": "custom",
+      "primary_color": "#4527a0",
+      "secondary_color": "#7986cb",
+      "accent_color": "#ffc107",
+      "name": "Education Purple Theme"
+    }
+  },
+  "time_range_usage_guidelines": {
+    "description": "Guidelines for selecting appropriate time ranges",
+    "24hr": {
+      "best_for": [
+        "Real-time monitoring",
+        "Daily campaign tracking",
+        "Event fundraising"
+      ],
+      "performance_impact": "Low",
+      "data_granularity": "Hourly"
+    },
+    "7days": {
+      "best_for": [
+        "Weekly performance review",
+        "Short-term trend analysis",
+        "Campaign sprints"
+      ],
+      "performance_impact": "Low",
+      "data_granularity": "Daily"
+    },
+    "1month": {
+      "best_for": [
+        "Monthly reporting",
+        "Seasonal analysis",
+        "Regular performance review"
+      ],
+      "performance_impact": "Medium",
+      "data_granularity": "Daily"
+    },
+    "3months": {
+      "best_for": [
+        "Quarterly analysis",
+        "Trend identification",
+        "Seasonal patterns"
+      ],
+      "performance_impact": "Medium",
+      "data_granularity": "Weekly"
+    },
+    "6months": {
+      "best_for": [
+        "Semi-annual review",
+        "Long-term trends",
+        "Year-over-year comparison"
+      ],
+      "performance_impact": "High",
+      "data_granularity": "Weekly"
+    },
+    "1year": {
+      "best_for": [
+        "Annual reporting",
+        "Strategic planning",
+        "Long-term analysis"
+      ],
+      "performance_impact": "High",
+      "data_granularity": "Monthly"
+    }
+  },
+  "installation_notes": {
+    "description": "Important notes for installation and configuration",
+    "requirements_check": [
+      "CiviCRM 5.39+ installed and functional",
+      "PHP 7.4+ with required extensions (json, pdo, mbstring)",
+      "MySQL 5.7+ or MariaDB 10.2+",
+      "Modern web browser with JavaScript enabled",
+      "Sufficient disk space for cache and export files"
+    ],
+    "post_installation_steps": [
+      "1. Set appropriate permissions for dashboard users",
+      "2. Configure global settings based on organizational needs",
+      "3. Set up user dashboards using sample configurations",
+      "4. Configure email alerts if desired",
+      "5. Test export functionality",
+      "6. Schedule cache warmup job for better performance"
+    ],
+    "troubleshooting_tips": [
+      "Check browser console for JavaScript errors",
+      "Verify database indexes are created properly",
+      "Ensure caching is enabled for better performance",
+      "Review CiviCRM logs for API errors",
+      "Test with sample data before production use"
+    ]
+  }
+}

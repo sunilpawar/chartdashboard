@@ -1,0 +1,112 @@
+{
+  "name": "example/com.skvare.chartdashboard",
+  "description": "CiviCRM Chart Dashboard Extension - Real-time donation analytics with comprehensive chart types and configurable dashboard",
+  "type": "civicrm-ext",
+  "license": "AGPL-3.0",
+  "authors": [
+    {
+      "name": "Example Organization",
+      "email": "admin@example.org",
+      "homepage": "https://example.org",
+      "role": "Developer"
+    }
+  ],
+  "homepage": "https://example.org/extensions/chartdashboard",
+  "support": {
+    "issues": "https://github.com/example/chartdashboard/issues",
+    "docs": "https://example.org/extensions/chartdashboard/docs",
+    "source": "https://github.com/example/chartdashboard"
+  },
+  "require": {
+    "php": ">=7.4",
+    "ext-json": "*",
+    "ext-pdo": "*",
+    "ext-mbstring": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0",
+    "phpstan/phpstan": "^1.0",
+    "squizlabs/php_codesniffer": "^3.6",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7"
+  },
+  "suggest": {
+    "ext-gd": "For enhanced image processing in PDF exports",
+    "ext-zip": "For Excel export functionality",
+    "dompdf/dompdf": "For PDF export functionality (if not already included in CiviCRM)",
+    "phpoffice/phpspreadsheet": "For enhanced Excel export capabilities"
+  },
+  "autoload": {
+    "psr-4": {
+      "CRM\\Chartdashboard\\": "CRM/Chartdashboard/",
+      "Civi\\Chartdashboard\\": "Civi/Chartdashboard/"
+    },
+    "classmap": [
+      "CRM/"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CRM\\Chartdashboard\\Test\\": "tests/phpunit/CRM/Chartdashboard/",
+      "Civi\\Test\\": "tests/phpunit/Civi/"
+    }
+  },
+  "extra": {
+    "civicrm": {
+      "namespace": "CRM/Chartdashboard",
+      "format": "23.02.1"
+    },
+    "enable-patching": true
+  },
+  "scripts": {
+    "test": [
+      "phpunit"
+    ],
+    "test-coverage": [
+      "phpunit --coverage-html coverage/"
+    ],
+    "analyze": [
+      "phpstan analyse CRM/ --level=5"
+    ],
+    "lint": [
+      "phpcs --standard=PSR12 CRM/ api/"
+    ],
+    "lint-fix": [
+      "phpcbf --standard=PSR12 CRM/ api/"
+    ],
+    "build": [
+      "@lint",
+      "@analyze",
+      "@test"
+    ],
+    "pre-commit": [
+      "@lint-fix",
+      "@test"
+    ]
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "keywords": [
+    "civicrm",
+    "extension",
+    "dashboard",
+    "analytics",
+    "charts",
+    "donations",
+    "fundraising",
+    "reporting",
+    "visualization",
+    "real-time"
+  ],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://repo.packagist.org"
+    }
+  ]
+}

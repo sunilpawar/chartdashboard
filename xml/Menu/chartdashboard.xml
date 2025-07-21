@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/chart-dashboard</path>
+    <page_callback>CRM_Chartdashboard_Page_Dashboard</page_callback>
+    <title>Chart Dashboard</title>
+    <access_arguments>view chart dashboard</access_arguments>
+    <page_type>1</page_type>
+    <is_ssl>true</is_ssl>
+    <weight>100</weight>
+  </item>
+  <item>
+    <path>civicrm/chart-dashboard/configure</path>
+    <page_callback>CRM_Chartdashboard_Form_Configure</page_callback>
+    <title>Configure Chart Dashboard</title>
+    <access_arguments>configure chart dashboard</access_arguments>
+    <page_type>1</page_type>
+    <is_ssl>true</is_ssl>
+    <weight>101</weight>
+  </item>
+  <item>
+    <path>civicrm/ajax/chart-dashboard/save-config</path>
+    <page_callback>CRM_Chartdashboard_Page_Dashboard::saveConfig</page_callback>
+    <access_arguments>view chart dashboard</access_arguments>
+    <page_type>1</page_type>
+    <is_ssl>true</is_ssl>
+    <weight>102</weight>
+  </item>
+  <item>
+    <path>civicrm/ajax/chart-dashboard/export</path>
+    <page_callback>CRM_Chartdashboard_Page_Export</page_callback>
+    <title>Export Chart Data</title>
+    <access_arguments>view chart dashboard</access_arguments>
+    <page_type>1</page_type>
+    <is_ssl>true</is_ssl>
+    <weight>103</weight>
+  </item>
+</menu>
